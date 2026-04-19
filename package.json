@@ -1,4 +1,12 @@
 {
+  "name": "ai-academic-mentor-system",
+  "version": "1.0.0",
+  "description": "AI Academic Mentor System - Full Stack",
+  "private": true,
+  "scripts": {
+    "dev": "cd backend && npm run dev",
+    "start": "cd backend && npm start"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0"
   }
