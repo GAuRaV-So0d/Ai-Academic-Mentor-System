@@ -1,20 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "cd backend && npm install",
+  "buildCommand": "cd backend && npm install && cd ..",
   "public": "frontend",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "/api"
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
+      "src": "/(?!api).*",
+      "dest": "/index.html"
     }
-  ],
-  "functions": {
-    "api/index.js": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }

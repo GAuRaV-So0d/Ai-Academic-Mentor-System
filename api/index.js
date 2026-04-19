@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -10,14 +9,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Connect to MongoDB
+if (!mongoose.connections[0].readyState) {
+  mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mentor_sys')
+    .catch(err => console.log('MongoDB connection error:', err));
+}
+
 // Routes
 const apiRoutes = require('../backend/routes/api');
 app.use('/api', apiRoutes);
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mentor_sys')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
+// Health check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
 
-// Export for Vercel serverless function
+// 404 fallback
+app.use((req, res) => {
+  res.status(404).json({ error: 'Endpoint not found' });
+});
+
+// Export for Vercel
 module.exports = app;
